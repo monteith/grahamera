@@ -4,18 +4,6 @@ let exec = require('child_process').exec;
 
 let app = express();
 
-const exec_callback = (err, stdout, stderr) => {
-  if (err) {
-    throw err.code;
-  }
-  if(stdout) {
-    console.log(stdout);
-  }
-  if(stderr) {
-    console.log(stderr);
-  }
-};
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -36,20 +24,21 @@ app.post('/payload', (req, res) => {
   console.log(`${pusher.name} just pushed to ${repository.name}`);
   console.log('pulling code from GitHub...');
 
-  // reset any local changes
-  try {
-    let shell = exec(`./webhook.sh`, exec_callback);
-
-    shell.on('exit', code => {
-      console.log(' === ', `Exiting with code: ${code}`);
-    });
-  } catch (err) {
-    res.sendStatus(500);
+  let shell = exec(`./webhook.sh`, (err, stdout) => {
+    if (err) {
+      console.log(' === Error: \n', err, '\n ===');
+      res.sendStatus(500);
+    }
+    else {
+      res.sendStatus(200);
+    }
+    console.log(`${stdout}`);
     res.end();
-  }
+  });
 
-  res.sendStatus(200);
-  res.end();
+  shell.on('exit', code => {
+    console.log(` === Exiting with code: ${code}`);
+  })
 });
 
 
