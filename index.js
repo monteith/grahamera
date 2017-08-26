@@ -18,8 +18,16 @@ app.get('/', (req, res) => {
   res.send('Hello');
 });
 
+app.get('/payload', (req, res) => {
+  res.send(200);
+  console.log('get /payload');
+});
+
 app.post('/payload', (req, res) => {
-  console.log(`${req.body.pusher.name} just pushed to ${req.body.repository.name}`);
+  let {repository, pusher} = req.body;
+  repository = !!repository || {name: 'unknown'};
+
+  console.log(`${pusher.name} just pushed to ${repository.name}`);
   console.log('pulling code from GitHub...');
 
   // reset any local changes
