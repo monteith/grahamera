@@ -26,6 +26,7 @@ app.get('/payload', (req, res) => {
 app.post('/payload', (req, res) => {
   let {repository, pusher} = req.body;
   repository = !!repository || {name: 'unknown'};
+  pusher = !!pusher || {name: 'unkown'};
 
   console.log(`${pusher.name} just pushed to ${repository.name}`);
   console.log('pulling code from GitHub...');
@@ -41,6 +42,9 @@ app.post('/payload', (req, res) => {
 
   // npm install
   exec(`npm -C ${prj_dir} install --production`, exec_callback);
+
+  res.sendStatus(200);
+  res.end();
 });
 
 
