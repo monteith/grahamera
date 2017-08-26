@@ -24,7 +24,7 @@ app.get('/payload', (req, res) => {
 app.post('/payload', (req, res) => {
   let {repository, pusher} = req.body;
   repository = !!repository || {name: 'unknown'};
-  pusher = !!pusher || {name: 'unkown'};
+  pusher = !!pusher || {name: 'unknown'};
 
   console.log(`${pusher.name} just pushed to ${repository.name}`);
   console.log('pulling code from GitHub...');
