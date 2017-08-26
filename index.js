@@ -6,8 +6,7 @@ let app = express();
 
 const exec_callback = (err, stdout, stderr) => {
   if (err) {
-    console.table(err);
-    throw new Error(err.code);
+    throw err.code;
   }
   if(stdout) {
     console.log(stdout);
@@ -48,7 +47,7 @@ app.post('/payload', (req, res) => {
     res.sendStatus(500);
     res.end();
   }
-  
+
   res.sendStatus(200);
   res.end();
 });
