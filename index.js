@@ -4,8 +4,6 @@ let exec = require('child_process').exec;
 
 let app = express();
 
-const prj_dir = '/var/www/pi/grahamera';
-
 const exec_callback = (err, stdout, stderr) => {
   if(stdout) { console.log(stdout) };
   if(stderr) console.log(stderr);
