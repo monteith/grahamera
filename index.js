@@ -44,14 +44,13 @@ app.post('/payload', (req, res) => {
     shell.on('exit', code => {
       console.log(' === ', `Exiting with code: ${code}`);
     });
-
-    res.sendStatus(200);
-    res.end();
   } catch (err) {
     res.sendStatus(500);
     res.end();
   }
-
+  
+  res.sendStatus(200);
+  res.end();
 });
 
 
