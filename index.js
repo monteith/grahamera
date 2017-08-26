@@ -5,8 +5,15 @@ let exec = require('child_process').exec;
 let app = express();
 
 const exec_callback = (err, stdout, stderr) => {
-  if(stdout) { console.log(stdout) };
-  if(stderr) console.log(stderr);
+  if (err) {
+    console.table(err);
+  }
+  if(stdout) {
+    console.log(stdout);
+  }
+  if(stderr) {
+    console.log(stderr);
+  }
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +37,13 @@ app.post('/payload', (req, res) => {
   console.log('pulling code from GitHub...');
 
   // reset any local changes
-  exec(`./webhook.sh`, exec_callback);
+  let shell = exec(`./webhook.sh`, exec_callback);
+
+
+
+  shell.on('exit', code => {
+
+  });
 
   res.sendStatus(200);
   res.end();
