@@ -7,6 +7,7 @@ let app = express();
 const exec_callback = (err, stdout, stderr) => {
   if (err) {
     console.table(err);
+    throw new Error(err.code);
   }
   if(stdout) {
     console.log(stdout);
@@ -37,16 +38,20 @@ app.post('/payload', (req, res) => {
   console.log('pulling code from GitHub...');
 
   // reset any local changes
-  let shell = exec(`./webhook.sh`, exec_callback);
+  try {
+    let shell = exec(`./webhook.sh`, exec_callback);
 
+    shell.on('exit', code => {
+      console.log(' === ', `Exiting with code: ${code}`);
+    });
 
+    res.sendStatus(200);
+    res.end();
+  } catch (err) {
+    res.sendStatus(500);
+    res.end();
+  }
 
-  shell.on('exit', code => {
-
-  });
-
-  res.sendStatus(200);
-  res.end();
 });
 
 
