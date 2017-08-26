@@ -32,16 +32,7 @@ app.post('/payload', (req, res) => {
   console.log('pulling code from GitHub...');
 
   // reset any local changes
-  exec(`git -C ${prj_dir} reset --hard`, exec_callback);
-
-  // ditch any files that were added locally
-  exec(`git -C ${prj_dir} clean -df`, exec_callback);
-
-  // pull latest code
-  exec(`git -C ${prj_dir} pull -f`, exec_callback);
-
-  // npm install
-  exec(`npm -C ${prj_dir} install --production`, exec_callback);
+  exec(`./webhook.sh`, exec_callback);
 
   res.sendStatus(200);
   res.end();
