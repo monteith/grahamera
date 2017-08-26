@@ -37,7 +37,12 @@ app.post('/payload', (req, res) => {
   });
 
   shell.on('exit', code => {
-    console.log(` === Exiting with code: ${code}`);
+    if (code === 0) {
+      console.log(' === Success! Exiting child process');
+    }
+    else {
+      console.log(` === Exiting with code: ${code}`);
+    }
   })
 });
 
